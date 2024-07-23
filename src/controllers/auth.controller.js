@@ -12,7 +12,6 @@ exports.signUp = async (req, res) => {
   try {
     const newUser = await User.create({
       email: "req.body.email",
-      username: "req.body.username",
       passwordHash: "req.body.password",
     });
     return res.status(200).json({ message: "Sign up successful", newUser });
