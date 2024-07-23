@@ -30,7 +30,7 @@ exports.signUp = async (req, res) => {
     );
     return res
       .status(200)
-      .json({ message: "Sign up successful", token, newUser });
+      .json({ message: "Sign up successful", token, user: newUser });
   } catch (e) {
     return res.status(400).json({ message: "Server Error" });
   }

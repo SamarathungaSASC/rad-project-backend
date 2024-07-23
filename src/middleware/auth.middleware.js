@@ -1,5 +1,6 @@
 const { JWT_SECRET } = require("../configs/server");
 const passport = require("passport");
+const User = require("../models/User.model");
 var JwtStrategy = require("passport-jwt").Strategy,
   ExtractJwt = require("passport-jwt").ExtractJwt;
 
@@ -8,18 +9,17 @@ const jwtStrategy = new JwtStrategy(
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
     secretOrKey: JWT_SECRET,
   },
-  function (jwt_payload, done) {
-    console.log("payload received", jwt_payload);
-    User.findOne({ id: jwt_payload.id }, function (err, user) {
-      if (err) {
-        return done(err, false);
-      }
+  async function (jwt_payload, done) {
+    try {
+      const user = await User.findById(jwt_payload.id).select("-passwordHash");
       if (user) {
         return done(null, user);
       } else {
         return done(null, false);
       }
-    });
+    } catch (error) {
+      return done(error, false);
+    }
   }
 );
 

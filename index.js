@@ -5,6 +5,7 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 
 const authRoutes = require("./src/routes/auth.route");
+const userRoutes = require("./src/routes/user.route");
 
 const { PORT, MONGO_URI } = require("./src/configs/server");
 const authMiddleware = require("./src/middleware/auth.middleware");
@@ -26,6 +27,7 @@ mongoose.connect(MONGO_URI).catch((error) => console.log(error));
 
 //Routes
 app.use("/v1/auth", authRoutes);
+app.use("/v1/user", authMiddleware, userRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server started in port ${PORT}`);
