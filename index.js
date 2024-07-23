@@ -23,6 +23,7 @@ app.use(bodyParser.json());
 //Connect MongoDB
 mongoose.connect(MONGO_URI).catch((error) => console.log(error));
 
+//Routes
 app.use("/v1/auth", authRoutes);
 
 app.listen(PORT, () => {
