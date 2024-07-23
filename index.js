@@ -29,6 +29,7 @@ mongoose.connect(MONGO_URI).catch((error) => console.log(error));
 app.use("/v1/auth", authRoutes);
 app.use("/v1/user", authMiddleware, userRoutes);
 
+//Start server
 app.listen(PORT, () => {
   console.log(`Server started in port ${PORT}`);
 });
