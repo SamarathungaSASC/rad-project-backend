@@ -7,6 +7,7 @@ const mongoose = require("mongoose");
 const authRoutes = require("./src/routes/auth.route");
 
 const { PORT, MONGO_URI } = require("./src/configs/server");
+const authMiddleware = require("./src/middleware/auth.middleware");
 
 const app = express();
 

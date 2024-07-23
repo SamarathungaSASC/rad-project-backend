@@ -1,3 +1,6 @@
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+
 const User = require("../models/User.model");
 
 exports.login = async (req, res) => {
@@ -10,11 +13,24 @@ exports.login = async (req, res) => {
 
 exports.signUp = async (req, res) => {
   try {
+    const { email, password } = req.body;
+    if (!email || !password) {
+      return res
+        .status(400)
+        .json({ message: "Email and password are required" });
+    }
+    const passwordHash = await bcrypt.hash(password, 10);
     const newUser = await User.create({
-      email: "req.body.email",
-      passwordHash: "req.body.password",
+      email,
+      passwordHash,
     });
-    return res.status(200).json({ message: "Sign up successful", newUser });
+    const token = jwt.sign(
+      { id: newUser._id, loginDate: new Date().getTime() },
+      process.env.JWT_SECRET
+    );
+    return res
+      .status(200)
+      .json({ message: "Sign up successful", token, newUser });
   } catch (e) {
     return res.status(400).json({ message: "Server Error" });
   }
