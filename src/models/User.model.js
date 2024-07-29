@@ -14,6 +14,10 @@ const UserSchema = new Schema({
     type: String,
     required: true,
   },
+  fullName: {
+    type: String,
+    required: false,
+  },
 });
 
 const User = model("User", UserSchema);
