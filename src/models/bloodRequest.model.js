@@ -1,4 +1,3 @@
-const e = require("express");
 const { Schema, model } = require("mongoose");
 
 const bloodRequestSchema = new Schema({
@@ -16,7 +15,7 @@ const bloodRequestSchema = new Schema({
     default: "PENDING",
   },
   userId: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: Schema.Types.ObjectId,
     ref: "User",
     required: true,
   },
@@ -27,7 +26,7 @@ const bloodRequestSchema = new Schema({
         required: true,
       },
       sender: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: "User",
         required: true,
       },
