@@ -1,5 +1,7 @@
 const { Schema, model } = require("mongoose");
 
+const userTypes = ["REQUESTER", "DONOR", "ADMIN"];
+
 const UserSchema = new Schema({
   email: {
     type: String,
@@ -8,7 +10,7 @@ const UserSchema = new Schema({
   userType: {
     type: String,
     required: true,
-    default: "DONOR",
+    default: "REQUESTER",
   },
   passwordHash: {
     type: String,
