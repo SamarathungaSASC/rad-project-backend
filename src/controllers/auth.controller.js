@@ -5,6 +5,11 @@ const User = require("../models/user.model");
 
 exports.login = async (req, res) => {
   try {
+    const token = jwt.sign(
+      { id: req.user._id, loginDate: new Date().getTime() },
+      process.env.JWT_SECRET
+    );
+    return res.status(200).json({ token, user: req.user });
     return res.status(200).json({ message: "Login successful" });
   } catch (e) {
     return res.status(400).json({ status: 400, message: "Server Error" });

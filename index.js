@@ -10,7 +10,7 @@ const adminRoutes = require("./src/routes/admin.route");
 const openRoutes = require("./src/routes/open.route");
 
 const { PORT, MONGO_URI } = require("./src/configs/server");
-const authMiddleware = require("./src/middleware/auth.middleware");
+const { authMiddleware } = require("./src/middleware/auth.middleware");
 
 const app = express();
 
