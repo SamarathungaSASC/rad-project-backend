@@ -1,29 +1,5 @@
 const DonationCampaign = require("../models/donationCampaign.model");
 
-exports.getCampaigns = async (req, res) => {
-  try {
-    const campaigns = await DonationCampaign.find();
-    return res
-      .status(200)
-      .json({ message: "Donation campaigns fetched", campaigns });
-  } catch (e) {
-    return res.status(400).json({ status: 400, message: "Server Error" });
-  }
-};
-
-exports.upcomingCampaigns = async (req, res) => {
-  try {
-    const campaigns = await DonationCampaign.find({
-      Date: { $gte: new Date() },
-    }).select("date title");
-    return res
-      .status(200)
-      .json({ message: "Upcoming donation campaigns fetched", campaigns });
-  } catch (e) {
-    return res.status(400).json({ status: 400, message: "Server Error" });
-  }
-};
-
 exports.addCampaign = async (req, res) => {
   try {
     const { title, description, location, date } = req.body;
