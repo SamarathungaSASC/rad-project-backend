@@ -19,7 +19,7 @@ const bloodRequestSchema = new Schema({
     ref: "User",
     required: true,
   },
-  chat: [
+  messages: [
     {
       message: {
         type: String,
@@ -29,6 +29,10 @@ const bloodRequestSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: "User",
         required: true,
+      },
+      date: {
+        type: Date,
+        default: Date.now,
       },
     },
   ],

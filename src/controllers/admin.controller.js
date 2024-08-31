@@ -58,3 +58,28 @@ exports.getDashboard = async (req, res) => {
     return res.status(400).json({ status: 400, message: "Server Error" });
   }
 };
+
+exports.getMessages = async (req, res) => {
+  try {
+    const request = await BloodRequest.findById(req.params.id);
+    return res.status(200).json({ messages: request.messages });
+  } catch (e) {
+    return res.status(400).json({ status: 400, message: "Server Error" });
+  }
+};
+
+exports.sendMessage = async (req, res) => {
+  try {
+    const { message } = req.body;
+    const request = await BloodRequest.findById(req.params.id);
+    request.messages.push({
+      message,
+      sender: req.user._id,
+    });
+    await request.save();
+
+    return res.status(200).json({ message: "Message sent" });
+  } catch (e) {
+    return res.status(400).json({ status: 400, message: "Server Error" });
+  }
+};
