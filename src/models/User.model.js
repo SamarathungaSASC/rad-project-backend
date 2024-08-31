@@ -20,6 +20,14 @@ const UserSchema = new Schema({
     type: String,
     required: false,
   },
+  bloodGroup: {
+    type: String,
+    required: false,
+  },
+  phoneNumber: {
+    type: String,
+    required: false,
+  },
 });
 
 const User = model("User", UserSchema);
