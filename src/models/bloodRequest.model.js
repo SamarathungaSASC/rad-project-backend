@@ -19,6 +19,14 @@ const bloodRequestSchema = new Schema({
     ref: "User",
     required: true,
   },
+  date: {
+    type: Date,
+    default: Date.now,
+  },
+  description: {
+    type: String,
+    required: false,
+  },
   messages: [
     {
       message: {

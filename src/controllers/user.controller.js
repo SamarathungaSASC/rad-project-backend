@@ -30,7 +30,7 @@ exports.requestBlood = async (req, res) => {
 
 exports.getRequests = async (req, res) => {
   try {
-    const requests = await BloodRequest.find({ userId: req.user._id });
+    const requests = await BloodRequest.find({ userId: req.user._id }).populate("userId").select("-messages").sort({ date: -1 });
     return res
       .status(200)
       .json({ message: "Blood requests fetched", requests });
@@ -41,7 +41,7 @@ exports.getRequests = async (req, res) => {
 
 exports.getRequest = async (req, res) => {
   try {
-    const request = await BloodRequest.findById(req.params.id).select("-messages");
+    const request = await BloodRequest.findById(req.params.id).select("-messages").populate("userId");
     return res.status(200).json({ message: "Blood request fetched", request });
   } catch (e) {
     return res.status(400).json({ status: 400, message: "Server Error" });
