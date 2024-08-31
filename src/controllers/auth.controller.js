@@ -9,8 +9,9 @@ exports.login = async (req, res) => {
       { id: req.user._id, loginDate: new Date().getTime() },
       process.env.JWT_SECRET
     );
-    return res.status(200).json({ token, user: req.user });
-    return res.status(200).json({ message: "Login successful" });
+    return res
+      .status(200)
+      .json({ message: "Login successful", user: { ...req.user._doc, token } });
   } catch (e) {
     return res.status(400).json({ status: 400, message: "Server Error" });
   }
@@ -24,6 +25,10 @@ exports.signUp = async (req, res) => {
         .status(400)
         .json({ message: "Email and password are required" });
     }
+    const user = User.findOne({ email });
+    if (user) {
+      return res.status(400).json({ message: "User already exists" });
+    }
     const passwordHash = await bcrypt.hash(password, 10);
     const newUser = await User.create({
       email,
@@ -33,9 +38,10 @@ exports.signUp = async (req, res) => {
       { id: newUser._id, loginDate: new Date().getTime() },
       process.env.JWT_SECRET
     );
-    return res
-      .status(200)
-      .json({ message: "Sign up successful", token, user: newUser });
+    return res.status(200).json({
+      message: "Sign up successful",
+      user: { ...newUser._doc, token },
+    });
   } catch (e) {
     return res.status(400).json({ message: "Server Error" });
   }
