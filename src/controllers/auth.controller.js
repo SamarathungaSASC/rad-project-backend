@@ -25,7 +25,7 @@ exports.signUp = async (req, res) => {
         .status(400)
         .json({ message: "Email and password are required" });
     }
-    const user = User.findOne({ email });
+    const user = await User.findOne({ email });
     if (user) {
       return res.status(400).json({ message: "User already exists" });
     }
@@ -43,6 +43,7 @@ exports.signUp = async (req, res) => {
       user: { ...newUser._doc, token },
     });
   } catch (e) {
+    console.log(e);
     return res.status(400).json({ message: "Server Error" });
   }
 };
