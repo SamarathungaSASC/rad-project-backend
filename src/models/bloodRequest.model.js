@@ -12,7 +12,7 @@ const bloodRequestSchema = new Schema({
   status: {
     type: String,
     required: true,
-    default: "PENDING",
+    default: "PENDING", // ACCEPTED, REJECTED
   },
   userId: {
     type: Schema.Types.ObjectId,
@@ -36,4 +36,4 @@ const bloodRequestSchema = new Schema({
 
 const BloodRequest = model("BloodRequest", bloodRequestSchema);
 
-model.exports = BloodRequest;
+module.exports = BloodRequest;

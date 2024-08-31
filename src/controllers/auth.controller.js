@@ -9,8 +9,9 @@ exports.login = async (req, res) => {
       { id: req.user._id, loginDate: new Date().getTime() },
       process.env.JWT_SECRET
     );
-    return res.status(200).json({ token, user: req.user });
-    return res.status(200).json({ message: "Login successful" });
+    return res
+      .status(200)
+      .json({ message: "Login successful", token, user: req.user });
   } catch (e) {
     return res.status(400).json({ status: 400, message: "Server Error" });
   }
