@@ -1,5 +1,6 @@
 const User = require("../models/user.model");
 const DonationCampaign = require("../models/donationCampaign.model");
+const bcrypt = require("bcrypt");
 
 exports.joinCampaign = async (req, res) => {
   try {
@@ -16,9 +17,19 @@ exports.joinCampaign = async (req, res) => {
         .status(404)
         .json({ status: 404, message: "Campaign not found" });
     }
+    if (
+      campaign.participants.find(
+        (p) => p.email === email || p.phoneNumber === phoneNumber
+      )
+    ) {
+      return res.status(400).json({ message: "Already joined" });
+    }
     campaign.participants.push({
+      fullName,
       email,
       phoneNumber,
+      address,
+      bloodGroup,
     });
     await campaign.save();
 
@@ -44,6 +55,7 @@ exports.joinCampaign = async (req, res) => {
     }
     return res.status(200).json({ message: "Joined campaign successfully" });
   } catch (e) {
+    console.log(e);
     return res.status(400).json({ status: 400, message: "Server Error" });
   }
 };

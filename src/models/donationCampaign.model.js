@@ -25,23 +25,23 @@ const donationCampaignSchema = new Schema({
     {
       fullName: {
         type: String,
-        required: true,
+        required: false,
       },
       email: {
         type: String,
-        required: true,
+        required: false,
       },
       phoneNumber: {
         type: String,
-        required: true,
+        required: false,
       },
       address: {
         type: String,
-        required: true,
+        required: false,
       },
       bloodGroup: {
         type: String,
-        required: true,
+        required: false,
       },
     },
   ],
