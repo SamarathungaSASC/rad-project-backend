@@ -13,6 +13,6 @@ router.post("/send-message/:id", adminController.sendMessage);
 router.get("/dashboard-data", adminController.getDashboard);
 router.post("/add-campaign", campaignController.addCampaign);
 router.put("/edit-campaign/:id", campaignController.editCampaign);
-router.post("/delete-campaign/:id", campaignController.deleteCampaign);
+router.delete("/delete-campaign/:id", campaignController.deleteCampaign);
 
 module.exports = router;
