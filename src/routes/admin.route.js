@@ -8,7 +8,7 @@ router.get("/get-request/:id", adminController.getRequest);
 router.post("/accept-request/:id", adminController.acceptRequest);
 router.get("/dashboard-data", adminController.getDashboard);
 router.post("/add-campaign", campaignController.addCampaign);
-router.post("/edit-campaign/:id", campaignController.editCampaign);
+router.put("/edit-campaign/:id", campaignController.editCampaign);
 router.post("/delete-campaign/:id", campaignController.deleteCampaign);
 
 module.exports = router;
