@@ -17,13 +17,15 @@ exports.joinCampaign = async (req, res) => {
         .status(404)
         .json({ status: 404, message: "Campaign not found" });
     }
-    campaign.participants.push({
-      fullName,
-      email,
-      phoneNumber,
-      address,
-      bloodGroup,
-    });
+    campaign.participants
+      .push({
+        fullName,
+        email,
+        phoneNumber,
+        address,
+        bloodGroup,
+      })
+      .filter((p) => p.email !== email);
     await campaign.save();
 
     // Create user if not exists
