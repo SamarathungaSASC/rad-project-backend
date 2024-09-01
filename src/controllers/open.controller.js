@@ -55,7 +55,6 @@ exports.joinCampaign = async (req, res) => {
     }
     return res.status(200).json({ message: "Joined campaign successfully" });
   } catch (e) {
-    console.log(e);
     return res.status(400).json({ status: 400, message: "Server Error" });
   }
 };
