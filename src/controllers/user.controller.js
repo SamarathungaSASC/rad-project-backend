@@ -16,9 +16,11 @@ exports.getData = async (req, res) => {
 
 exports.requestBlood = async (req, res) => {
   try {
-    const { requestData } = req.body;
+    const { bloodGroup, location, description } = req.body;
     const newBloodRequest = await BloodRequest.create({
-      ...requestData,
+      bloodGroup,
+      location,
+      description,
       userId: req.user._id,
     });
 
