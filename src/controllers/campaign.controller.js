@@ -2,8 +2,8 @@ const DonationCampaign = require("../models/donationCampaign.model");
 
 exports.addCampaign = async (req, res) => {
   try {
-    const { title, description, location, date } = req.body;
-    if (!title || !description || !date || !location) {
+    const { title, description, location, date, imgURL } = req.body;
+    if (!title || !description || !date || !location || !imgURL) {
       return res.status(400).json({ message: "All fields are required" });
     }
     const newCampaign = await DonationCampaign.create({
@@ -11,6 +11,7 @@ exports.addCampaign = async (req, res) => {
       description,
       date,
       location,
+      imgURL,
       participants: [],
     });
     return res
@@ -25,8 +26,8 @@ exports.addCampaign = async (req, res) => {
 
 exports.editCampaign = async (req, res) => {
   try {
-    const { title, description, location, date } = req.body;
-    if (!title || !description || !date || !location) {
+    const { title, description, location, date, imgURL } = req.body;
+    if (!title || !description || !date || !location || !imgURL) {
       return res.status(400).json({ message: "All fields are required" });
     }
     const campaign = await DonationCampaign.findById(req.params.id);
@@ -34,6 +35,7 @@ exports.editCampaign = async (req, res) => {
     campaign.description = description;
     campaign.date = date;
     campaign.location = location;
+    campaign.imgURL = imgURL;
     await campaign.save();
     return res
       .status(200)

@@ -10,10 +10,9 @@ router.post("/accept-request/:id", adminController.acceptRequest);
 router.get("/get-messages/:id", adminController.getMessages);
 router.post("/send-message/:id", adminController.sendMessage);
 
-
 router.get("/dashboard-data", adminController.getDashboard);
 router.post("/add-campaign", campaignController.addCampaign);
-router.post("/edit-campaign/:id", campaignController.editCampaign);
-router.post("/delete-campaign/:id", campaignController.deleteCampaign);
+router.put("/edit-campaign/:id", campaignController.editCampaign);
+router.delete("/delete-campaign/:id", campaignController.deleteCampaign);
 
 module.exports = router;

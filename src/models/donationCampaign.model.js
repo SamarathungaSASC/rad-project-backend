@@ -17,6 +17,10 @@ const donationCampaignSchema = new Schema({
     type: Date,
     required: true,
   },
+  imgURL: {
+    type: String,
+    required: true,
+  },
   participants: [
     {
       fullName: {
