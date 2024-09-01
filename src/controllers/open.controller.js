@@ -59,6 +59,20 @@ exports.getCampaigns = async (req, res) => {
   }
 };
 
+exports.getCampaign = async (req, res) => {
+  try {
+    const campaign = await DonationCampaign.findById(req.params.id);
+    if (!campaign) {
+      return res
+        .status(404)
+        .json({ status: 404, message: "Campaign not found" });
+    }
+    return res.status(200).json({ message: "Campaign fetched", campaign });
+  } catch (e) {
+    return res.status(400).json({ status: 400, message: "Server Error" });
+  }
+};
+
 exports.upcomingCampaigns = async (req, res) => {
   try {
     const campaigns = await DonationCampaign.find({
