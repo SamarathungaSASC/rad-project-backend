@@ -14,6 +14,46 @@ exports.getData = async (req, res) => {
   }
 };
 
+exports.updateData = async (req, res) => {
+  try {
+    const userId = req.user._id; 
+    const { password, phoneNumber, address, bloodGroup } = req.body;
+
+    
+    let updateFields = {};
+
+    
+    if (password) {
+      const saltRounds = 10;
+      const hashedPassword = await bcrypt.hash(password, saltRounds);
+      updateFields.passwordHash = hashedPassword;
+    }
+
+    
+    if (phoneNumber) updateFields.phoneNumber = phoneNumber;
+    if (address) updateFields.address = address; 
+    if (bloodGroup) updateFields.bloodGroup = bloodGroup;
+
+    
+    const updatedUser = await User.findByIdAndUpdate(userId, updateFields, {
+      new: true,
+    });
+
+    if (!updatedUser) {
+      return res.status(404).json({ status: 404, message: "User not found" });
+    }
+
+    return res.status(200).json({
+      message: "Data updated successfully",
+      user: updatedUser,
+    });
+  } catch (e) {
+    console.error(e);
+    return res.status(500).json({ status: 500, message: "Server Error" });
+  }
+};
+
+
 exports.requestBlood = async (req, res) => {
   try {
     const { bloodGroup, location, description } = req.body;
