@@ -96,3 +96,14 @@ exports.upcomingCampaigns = async (req, res) => {
     return res.status(400).json({ status: 400, message: "Server Error" });
   }
 };
+
+exports.contactUs = async (req, res) => {
+  try {
+  //logic to store contact data
+    return res
+      .status(200)
+      .json({ message: "contact added" });
+  } catch (e) {
+    return res.status(400).json({ status: 400, message: "Server Error" });
+  }
+};
