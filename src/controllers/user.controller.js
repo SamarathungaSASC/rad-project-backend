@@ -16,13 +16,43 @@ exports.getData = async (req, res) => {
 
 exports.updateData = async (req, res) => {
   try {
-    return res
-      .status(200)
-      .json({ message: "Data updated" });
+    const userId = req.user._id; // Assuming the user is authenticated and their ID is stored in req.user._id
+    const { password, phoneNumber, address, bloodGroup } = req.body;
+
+    // Prepare the update object
+    let updateFields = {};
+
+    // If password is provided, hash it
+    if (password) {
+      const saltRounds = 10;
+      const hashedPassword = await bcrypt.hash(password, saltRounds);
+      updateFields.passwordHash = hashedPassword;
+    }
+
+    // Update other fields if provided
+    if (phoneNumber) updateFields.phoneNumber = phoneNumber;
+    if (address) updateFields.address = address; // Assuming you add address field to your schema
+    if (bloodGroup) updateFields.bloodGroup = bloodGroup;
+
+    // Update the user in the database
+    const updatedUser = await User.findByIdAndUpdate(userId, updateFields, {
+      new: true,
+    });
+
+    if (!updatedUser) {
+      return res.status(404).json({ status: 404, message: "User not found" });
+    }
+
+    return res.status(200).json({
+      message: "Data updated successfully",
+      user: updatedUser,
+    });
   } catch (e) {
-    return res.status(400).json({ status: 400, message: "Server Error" });
+    console.error(e);
+    return res.status(500).json({ status: 500, message: "Server Error" });
   }
 };
+
 
 exports.requestBlood = async (req, res) => {
   try {

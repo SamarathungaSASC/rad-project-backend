@@ -28,6 +28,10 @@ const UserSchema = new Schema({
     type: String,
     required: false,
   },
+  address: {
+    type: String,
+    required: false,
+  },
 });
 
 const User = model("User", UserSchema);
