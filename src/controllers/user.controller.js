@@ -14,6 +14,16 @@ exports.getData = async (req, res) => {
   }
 };
 
+exports.updateData = async (req, res) => {
+  try {
+    return res
+      .status(200)
+      .json({ message: "Data updated" });
+  } catch (e) {
+    return res.status(400).json({ status: 400, message: "Server Error" });
+  }
+};
+
 exports.requestBlood = async (req, res) => {
   try {
     const { bloodGroup, location, description } = req.body;
