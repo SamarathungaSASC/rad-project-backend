@@ -46,8 +46,9 @@ exports.getDashboard = async (req, res) => {
       status: "PENDING",
     });
     const numCampaigns = await DonationCampaign.countDocuments({
-      Date: { $gte: new Date() },
+      date: { $gte: new Date() },
     });
+
     const numDonors = await User.countDocuments({ userType: "DONOR" });
     return res.status(200).json({
       message: "Dashboard data fetched",
