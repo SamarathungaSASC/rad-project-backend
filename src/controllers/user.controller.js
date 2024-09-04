@@ -16,25 +16,25 @@ exports.getData = async (req, res) => {
 
 exports.updateData = async (req, res) => {
   try {
-    const userId = req.user._id; // Assuming the user is authenticated and their ID is stored in req.user._id
+    const userId = req.user._id; 
     const { password, phoneNumber, address, bloodGroup } = req.body;
 
-    // Prepare the update object
+    
     let updateFields = {};
 
-    // If password is provided, hash it
+    
     if (password) {
       const saltRounds = 10;
       const hashedPassword = await bcrypt.hash(password, saltRounds);
       updateFields.passwordHash = hashedPassword;
     }
 
-    // Update other fields if provided
+    
     if (phoneNumber) updateFields.phoneNumber = phoneNumber;
-    if (address) updateFields.address = address; // Assuming you add address field to your schema
+    if (address) updateFields.address = address; 
     if (bloodGroup) updateFields.bloodGroup = bloodGroup;
 
-    // Update the user in the database
+    
     const updatedUser = await User.findByIdAndUpdate(userId, updateFields, {
       new: true,
     });
