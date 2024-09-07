@@ -1,6 +1,8 @@
 const User = require("../models/user.model");
 const DonationCampaign = require("../models/donationCampaign.model");
 const bcrypt = require("bcrypt");
+const nodemailer = require("nodemailer");
+const { EMAIL, PASSWORD } = require("../configs/server");
 
 exports.joinCampaign = async (req, res) => {
   try {
@@ -99,11 +101,45 @@ exports.upcomingCampaigns = async (req, res) => {
 
 exports.contactUs = async (req, res) => {
   try {
-  //logic to store contact data
-    return res
-      .status(200)
-      .json({ message: "contact added" });
+    const { fullName, email, message } = req.body;
+    if (!email) {
+      return res
+        .status(400)
+        .json({ message: "Email and phone number is required" });
+    }
+
+    // Send email to admin
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      secure: false,
+      auth: {
+        user: EMAIL,
+        pass: PASSWORD,
+      },
+    });
+
+    const mailOptions = {
+      from: EMAIL,
+      to: EMAIL,
+      subject: "Blood Donation Contact Us",
+      text: `Name: ${fullName}\nEmail: ${email}\nMessage: ${message}`,
+    };
+
+    await transporter.sendMail(mailOptions);
+
+    // Send email to user
+    const mailOptionsUser = {
+      from: EMAIL,
+      to: email,
+      subject: "Blood Donation Contact Us",
+      text: `Thank you for contacting us. We will get back to you soon`,
+    };
+
+    await transporter.sendMail(mailOptionsUser);
+
+    return res.status(200).json({ message: "Message sent" });
   } catch (e) {
+    console.log(e);
     return res.status(400).json({ status: 400, message: "Server Error" });
   }
 };

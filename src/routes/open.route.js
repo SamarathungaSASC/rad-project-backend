@@ -7,7 +7,7 @@ router.get("/get-campaigns", openController.getCampaigns);
 router.get("/get-campaign/:id", openController.getCampaign);
 router.get("/get-upcoming-campaigns", openController.upcomingCampaigns);
 
-router.get("/contact", openController.contactUs);
+router.post("/contact", openController.contactUs);
 
 
 module.exports = router;
