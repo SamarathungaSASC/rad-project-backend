@@ -39,6 +39,17 @@ exports.acceptRequest = async (req, res) => {
   }
 };
 
+exports.rejectRequest = async (req, res) => {
+  try {
+    const request = await BloodRequest.findById(req.params.id);
+    request.status = "REJECTED";
+    await request.save();
+    return res.status(200).json({ message: "Blood request rejected" });
+  } catch (e) {
+    return res.status(400).json({ status: 400, message: "Server Error" });
+  }
+}
+
 exports.getDashboard = async (req, res) => {
   try {
     const bloodData = await BloodStock.find();
