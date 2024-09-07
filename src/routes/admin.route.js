@@ -5,8 +5,8 @@ const campaignController = require("../controllers/campaign.controller");
 
 router.get("/get-requests", adminController.getRequests);
 router.get("/get-request/:id", adminController.getRequest);
-router.post("/accept-request/:id", adminController.acceptRequest);
-router.post("/reject-request/:id", adminController.rejectRequest);
+router.put("/accept-request/:id", adminController.acceptRequest);
+router.put("/reject-request/:id", adminController.rejectRequest);
 
 router.get("/get-messages/:id", adminController.getMessages);
 router.post("/send-message/:id", adminController.sendMessage);
