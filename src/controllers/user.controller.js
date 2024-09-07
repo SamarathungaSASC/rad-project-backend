@@ -14,27 +14,49 @@ exports.getData = async (req, res) => {
   }
 };
 
+exports.getDashboard = async (req, res) => {
+  try {
+    const userRequests = await BloodRequest.find({ userId: req.user._id });
+    const totalRequests = userRequests.length;
+    const acceptedRequests = userRequests.filter(
+      (req) => req.status === "ACCEPTED"
+    ).length;
+    const pendingRequests = userRequests.filter(
+      (req) => req.status === "PENDING"
+    ).length;
+    const rejectedRequests = userRequests.filter(
+      (req) => req.status === "REJECTED"
+    ).length;
+
+    return res.status(200).json({
+      message: "Dashboard data fetched",
+      totalRequests,
+      acceptedRequests,
+      pendingRequests,
+      rejectedRequests,
+    });
+  } catch (e) {
+    return res.status(400).json({ status: 400, message: "Server Error" });
+  }
+};
+
 exports.updateData = async (req, res) => {
   try {
-    const userId = req.user._id; 
+    const userId = req.user._id;
     const { password, phoneNumber, address, bloodGroup } = req.body;
 
-    
     let updateFields = {};
 
-    
     if (password) {
       const saltRounds = 10;
       const hashedPassword = await bcrypt.hash(password, saltRounds);
       updateFields.passwordHash = hashedPassword;
     }
 
-    
     if (phoneNumber) updateFields.phoneNumber = phoneNumber;
-    if (address) updateFields.address = address; 
+    if (address) updateFields.address = address;
     if (bloodGroup) updateFields.bloodGroup = bloodGroup;
 
-    
     const updatedUser = await User.findByIdAndUpdate(userId, updateFields, {
       new: true,
     });
@@ -52,7 +74,6 @@ exports.updateData = async (req, res) => {
     return res.status(500).json({ status: 500, message: "Server Error" });
   }
 };
-
 
 exports.requestBlood = async (req, res) => {
   try {
@@ -72,7 +93,10 @@ exports.requestBlood = async (req, res) => {
 
 exports.getRequests = async (req, res) => {
   try {
-    const requests = await BloodRequest.find({ userId: req.user._id }).populate("userId").select("-messages").sort({ date: -1 });
+    const requests = await BloodRequest.find({ userId: req.user._id })
+      .populate("userId")
+      .select("-messages")
+      .sort({ date: -1 });
     return res
       .status(200)
       .json({ message: "Blood requests fetched", requests });
@@ -83,7 +107,9 @@ exports.getRequests = async (req, res) => {
 
 exports.getRequest = async (req, res) => {
   try {
-    const request = await BloodRequest.findById(req.params.id).select("-messages").populate("userId");
+    const request = await BloodRequest.findById(req.params.id)
+      .select("-messages")
+      .populate("userId");
     return res.status(200).json({ message: "Blood request fetched", request });
   } catch (e) {
     return res.status(400).json({ status: 400, message: "Server Error" });
@@ -109,18 +135,21 @@ exports.sendMessage = async (req, res) => {
 exports.getMessages = async (req, res) => {
   try {
     const request = await BloodRequest.findById(req.params.id);
-    const messages = request.messages.map((msg) => {
-      return {
-        _id: msg._id,
-        message: msg.message,
-        direction: msg.sender.toString() === req.user._id.toString() ? "outgoing" : "incoming",
-        date: msg.date,
-      };
-    }).sort((a, b) => a.date - b.date);
-    return res
-      .status(200)
-      .json({ message: "Messages fetched", messages });
+    const messages = request.messages
+      .map((msg) => {
+        return {
+          _id: msg._id,
+          message: msg.message,
+          direction:
+            msg.sender.toString() === req.user._id.toString()
+              ? "outgoing"
+              : "incoming",
+          date: msg.date,
+        };
+      })
+      .sort((a, b) => a.date - b.date);
+    return res.status(200).json({ message: "Messages fetched", messages });
   } catch (e) {
     return res.status(400).json({ status: 400, message: "Server Error" });
   }
-}
+};
