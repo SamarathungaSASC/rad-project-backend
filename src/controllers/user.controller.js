@@ -100,9 +100,9 @@ exports.sendMessage = async (req, res) => {
     });
     await request.save();
 
-    
+    return res.status(200).json({ message: "Message sent succsess" });
   } catch (e) {
-    return res.status(400).json({ status: 400, message: "Server Error" });
+    return res.status(400).json({ status: 400, message: "Server Error occur" });
   }
 };
 
