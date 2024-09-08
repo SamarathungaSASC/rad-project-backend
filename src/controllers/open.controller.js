@@ -43,6 +43,7 @@ exports.joinCampaign = async (req, res) => {
       address,
       bloodGroup,
     });
+
     if (!exsisitingUser) {
       const passwordHash = await bcrypt.hash(
         phoneNumber || "123456", // Default password
@@ -51,7 +52,7 @@ exports.joinCampaign = async (req, res) => {
       await User.create({
         email,
         phoneNumber,
-        role: "DONOR",
+        userType: "DONOR",
         passwordHash,
       });
     }
