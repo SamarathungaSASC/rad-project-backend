@@ -90,21 +90,7 @@ exports.getRequest = async (req, res) => {
   }
 };
 
-exports.sendMessage = async (req, res) => {
-  try {
-    const { message } = req.body;
-    const request = await BloodRequest.findById(req.params.id);
-    request.messages.push({
-      message,
-      sender: req.user._id,
-    });
-    await request.save();
 
-    return res.status(200).json({ message: "Message sent succsess" });
-  } catch (e) {
-    return res.status(400).json({ status: 400, message: "Server Error occur" });
-  }
-};
 
 exports.getMessages = async (req, res) => {
   try {
