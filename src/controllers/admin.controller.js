@@ -111,3 +111,19 @@ exports.sendMessage = async (req, res) => {
     return res.status(400).json({ status: 400, message: "Server Error" });
   }
 };
+
+exports.updateDashboard = async (req, res) => {
+  try {
+    const { bloodData } = req.body;
+
+    for (const item of bloodData) {
+      const bloodGroup = item.group;
+      const stock = item.stock;
+      await BloodStock.updateOne({ bloodGroup }, { stock }, { upsert: true });
+    }
+
+    return res.status(200).json({ message: "Dashboard updated" });
+  } catch (e) {
+    return res.status(400).json({ status: 400, message: "Server Error" });
+  }
+};

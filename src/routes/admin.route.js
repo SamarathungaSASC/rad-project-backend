@@ -12,6 +12,8 @@ router.get("/get-messages/:id", adminController.getMessages);
 router.post("/send-message/:id", adminController.sendMessage);
 
 router.get("/dashboard-data", adminController.getDashboard);
+router.put("/update-dashboard", adminController.updateDashboard);
+
 router.post("/add-campaign", campaignController.addCampaign);
 router.put("/edit-campaign/:id", campaignController.editCampaign);
 router.delete("/delete-campaign/:id", campaignController.deleteCampaign);
