@@ -25,7 +25,30 @@ const jwtStrategy = new JwtStrategy(
   }
 );
 
-
+const localStrategy = new LocalStrategy(
+  {
+    usernameField: "email",
+    passwordField: "password",
+  },
+  async function (email, password, done) {
+    try {
+      const user = await User.findOne({ email });
+      if (!user) {
+        return done(null, false, { message: "Incorrect email." });
+      }
+      const validatePassword = await bcrypt.compare(
+        password,
+        user.passwordHash
+      );
+      if (!validatePassword) {
+        return done(null, false, { message: "Incorrect password." });
+      }
+      return done(null, user, { message: "Login successful" });
+    } catch (error) {
+      return done(error);
+    }
+  }
+);
 
 passport.use("jwt", jwtStrategy);
 passport.use("local", localStrategy);
