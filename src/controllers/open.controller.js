@@ -36,7 +36,7 @@ exports.joinCampaign = async (req, res) => {
     await campaign.save();
 
     // Create user if not exists
-    const exsisitingUser = await User.findOne({
+    let existingUser = await User.findOne({
       fullName,
       email,
       phoneNumber,
@@ -44,19 +44,41 @@ exports.joinCampaign = async (req, res) => {
       bloodGroup,
     });
 
-    if (!exsisitingUser) {
+    if (!existingUser) {
       const passwordHash = await bcrypt.hash(
         phoneNumber || "123456", // Default password
         10
       );
-      await User.create({
+      existingUser = await User.create({
         email,
         phoneNumber,
+        fullName,
+        address,
+        bloodGroup,
         userType: "DONOR",
         passwordHash,
       });
     }
-    return res.status(200).json({ message: "Joined campaign successfully" });
+    //send email to user
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      secure: false,
+      auth: {
+        user: EMAIL,
+        pass: PASSWORD,
+      },
+    });
+
+    await transporter.sendMail({
+      from: EMAIL,
+      to: email,
+      subject: "Blood Donation Campaign",
+      text: `You have successfully joined the campaign ${campaign.title} on ${campaign.date}`,
+    });
+
+    return res
+      .status(200)
+      .json({ message: "Joined campaign successfully", user: existingUser });
   } catch (e) {
     return res.status(400).json({ status: 400, message: "Server Error" });
   }
@@ -141,6 +163,44 @@ exports.contactUs = async (req, res) => {
     return res.status(200).json({ message: "Message sent" });
   } catch (e) {
     console.log(e);
+    return res.status(400).json({ status: 400, message: "Server Error" });
+  }
+};
+
+exports.leaveCampaign = async (req, res) => {
+  try {
+    const { campaignId } = req.params;
+    const { email, phoneNumber } = req.body;
+    const campaign = await DonationCampaign.findById(campaignId);
+    if (!campaign) {
+      return res
+        .status(404)
+        .json({ status: 404, message: "Campaign not found" });
+    }
+    campaign.participants = campaign.participants.filter(
+      (p) => p.email !== email && p.phoneNumber !== phoneNumber
+    );
+    await campaign.save();
+
+    //send email to user
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      secure: false,
+      auth: {
+        user: EMAIL,
+        pass: PASSWORD,
+      },
+    });
+
+    await transporter.sendMail({
+      from: EMAIL,
+      to: email,
+      subject: "Blood Donation Campaign",
+      text: `You have successfully left the campaign ${campaign.title} on ${campaign.date}`,
+    });
+
+    return res.status(200).json({ message: "Left campaign" });
+  } catch (e) {
     return res.status(400).json({ status: 400, message: "Server Error" });
   }
 };
