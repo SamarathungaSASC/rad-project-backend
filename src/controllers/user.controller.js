@@ -126,9 +126,9 @@ exports.sendMessage = async (req, res) => {
     });
     await request.save();
 
-    return res.status(200).json({ message: "Message sent" });
+    return res.status(200).json({ message: "Message sent succsess" });
   } catch (e) {
-    return res.status(400).json({ status: 400, message: "Server Error" });
+    return res.status(400).json({ status: 400, message: "Server Error occur" });
   }
 };
 
@@ -153,3 +153,20 @@ exports.getMessages = async (req, res) => {
     return res.status(400).json({ status: 400, message: "Server Error" });
   }
 };
+
+//edit
+exports.deleteRequest = async (req, res) => {
+  try {
+    const requestId = req.params.id;
+    const deletedRequest = await BloodRequest.findByIdAndDelete(requestId);
+
+    if (!deletedRequest) {
+      return res.status(404).json({ status: 404, message: "Request not found" });
+    }
+
+    return res.status(200).json({ message: "Request deleted successfully" });
+  } catch (e) {
+    return res.status(500).json({ status: 500, message: "Server Error" });
+  }
+};
+

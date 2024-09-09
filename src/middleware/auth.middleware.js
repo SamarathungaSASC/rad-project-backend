@@ -27,8 +27,8 @@ const jwtStrategy = new JwtStrategy(
 
 const localStrategy = new LocalStrategy(
   {
-    usernameField: "email",
     passwordField: "password",
+    usernameField: "email",
   },
   async function (email, password, done) {
     try {
