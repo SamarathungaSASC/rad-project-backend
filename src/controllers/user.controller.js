@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 
 const User = require("../models/user.model");
 const BloodRequest = require("../models/bloodRequest.model");
+const BloodStock = require("../models/bloodStock.model");
 
 exports.getData = async (req, res) => {
   try {
@@ -28,12 +29,15 @@ exports.getDashboard = async (req, res) => {
       (req) => req.status === "REJECTED"
     ).length;
 
+    const bloodData = await BloodStock.find();
+
     return res.status(200).json({
       message: "Dashboard data fetched",
       totalRequests,
       acceptedRequests,
       pendingRequests,
       rejectedRequests,
+      bloodStock: bloodData,
     });
   } catch (e) {
     return res.status(400).json({ status: 400, message: "Server Error" });
