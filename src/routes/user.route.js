@@ -13,4 +13,8 @@ router.get("/get-request/:id", userController.getRequest);
 router.post("/send-message/:id", userController.sendMessage);
 router.get("/get-messages/:id", userController.getMessages);
 
+//edit
+router.delete("/delete-request/:id", userController.deleteRequest);
+
+
 module.exports = router;
