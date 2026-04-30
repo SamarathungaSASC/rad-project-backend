@@ -49,5 +49,5 @@ jobs:
         with:
          context: .
          dockerfile: Dockerfile
-         push: false
+         push: true
          tags: ${{ secrets.DOCKER_HUB_USER_NAME }}/rad-project-backend:latest
