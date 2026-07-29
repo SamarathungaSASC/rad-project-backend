@@ -13,6 +13,7 @@ const { PORT, MONGO_URI } = require("./src/configs/server");
 const { authMiddleware } = require("./src/middleware/auth.middleware");
 
 const app = express();
+const path = require("path");
 
 app.use(
   cors({
@@ -25,7 +26,19 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 //Connect MongoDB
-mongoose.connect(MONGO_URI).catch((error) => console.log(error));
+mongoose.connect(MONGO_URI).catch((error) => {
+  console.log("MongoDB connection error:", error.message);
+});
+
+// Serve static UI pages
+app.use(express.static(path.join(__dirname, "public")));
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "index.html"));
+});
+app.get(["/campaigns", "/about", "/contact"], (req, res) => {
+  const page = req.path.replace(/^\//, "") || "index";
+  res.sendFile(path.join(__dirname, "public", `${page}.html`));
+});
 
 //Routes
 app.use("/v1/auth", authRoutes);

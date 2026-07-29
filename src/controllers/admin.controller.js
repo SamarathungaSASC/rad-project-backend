@@ -1,4 +1,4 @@
-const User = require("../models/user.model");
+const User = require("../models/User.model");
 const BloodRequest = require("../models/bloodRequest.model");
 const BloodStock = require("../models/bloodStock.model");
 const DonationCampaign = require("../models/donationCampaign.model");

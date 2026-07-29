@@ -34,7 +34,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
          context: .
-         dockerfile: Dockerfile
+         file: Dockerfile
          push: false
          tags: ${{ secrets.DOCKER_HUB_USER_NAME }}/rad-project-backend:latest
 
@@ -48,6 +48,6 @@ jobs:
         uses: docker/build-push-action@v3
         with:
          context: .
-         dockerfile: Dockerfile
+         file: Dockerfile
          push: true
          tags: ${{ secrets.DOCKER_HUB_USER_NAME }}/rad-project-backend:latest

@@ -1,0 +1,35 @@
+x<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact</title>
+    <style>
+      body { font-family: Arial, sans-serif; margin: 0; background: #f7f7f7; color: #222; }
+      nav { background: #b31919; color: white; padding: 1rem 2rem; display: flex; gap: 1rem; }
+      nav a { color: white; text-decoration: none; font-weight: bold; }
+      main { padding: 2rem; max-width: 900px; margin: auto; }
+      .card { background: white; border-radius: 8px; padding: 1.2rem; margin-bottom: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+      input, textarea { width: 100%; padding: 0.7rem; margin-bottom: 0.8rem; border: 1px solid #ccc; border-radius: 6px; }
+      button { background: #b31919; color: white; border: none; padding: 0.7rem 1rem; border-radius: 6px; cursor: pointer; }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/campaigns">Campaigns</a>
+      <a href="/about">About</a>
+      <a href="/contact">Contact</a>
+    </nav>
+    <main>
+      <div class="card">
+        <h2>Contact Us</h2>
+        <p>This form is UI-only for now and does not submit to a database.</p>
+        <input placeholder="Your name" />
+        <input placeholder="Your email" />
+        <textarea placeholder="Your message" rows="5"></textarea>
+        <button>Send Message</button>
+      </div>
+    </main>
+  </body>
+</html>

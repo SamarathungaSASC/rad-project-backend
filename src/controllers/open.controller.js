@@ -1,4 +1,4 @@
-const User = require("../models/user.model");
+const User = require("../models/User.model");
 const DonationCampaign = require("../models/donationCampaign.model");
 const bcrypt = require("bcrypt");
 const nodemailer = require("nodemailer");
